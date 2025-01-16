@@ -4,10 +4,10 @@ import { useState } from "react";
 import { Button } from "shared/ui/Button/ui/Button";
 
 interface SidebarProps {
-    clasName?: string;
+    className?: string;
 }
 
-export const Sidebar = ({ clasName }: SidebarProps) => {
+export const Sidebar = ({ className }: SidebarProps) => {
 
     const [collapsed, setCollapsed] = useState(false)
 
@@ -16,7 +16,7 @@ export const Sidebar = ({ clasName }: SidebarProps) => {
     }
 
     return (
-        <div className={classNames(cls.Sidebar, { [cls.collapsed]: collapsed }, [clasName])}>
+        <div className={classNames(cls.Sidebar, { [cls.collapsed]: collapsed }, [className])}>
             <Button onClick={onToggle}>toggle</Button>
         </div>
     )

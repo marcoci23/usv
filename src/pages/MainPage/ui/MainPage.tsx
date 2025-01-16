@@ -1,8 +1,11 @@
 import { useEffect } from "react"
+import { Modal } from "shared/ui/Modal/Modal"
 
 const MainPage = () => {
     return (
-        <h2>MAIN PAGE</h2>
+        <div>
+            <h2>MAIN PAGE</h2>
+        </div>
     )
 }
 

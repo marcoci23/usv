@@ -6,16 +6,16 @@ import { Button } from "shared/ui/Button/ui/Button";
 import { useTheme } from "app/providers/ThemeProvider";
 
 interface NavbarProps {
-    clasName?: string;
+    className?: string;
 
 }
 
-export const Navbar = ({ clasName }: NavbarProps) => {
+export const Navbar = ({ className }: NavbarProps) => {
 
     const { theme, toggleTheme } = useTheme()
 
     return (
-        <div className={classNames(cls.navbar, {}, [clasName])}>
+        <div className={classNames(cls.navbar, {}, [className])}>
             <Icon className={cls.icon} />
             <h3>NAVBAR</h3>
             <div className={cls.links}>
