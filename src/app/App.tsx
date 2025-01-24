@@ -5,19 +5,22 @@ import { AppRouter } from './providers/router'
 import { useTheme } from './providers/ThemeProvider'
 
 import { Sidebar } from 'widgets/sidebar'
-import { useState } from 'react'
-import { Modal } from 'shared/ui/Modal/Modal'
+import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { userActions } from 'entities/User'
 
 const App = () => {
 
     const { theme, toggleTheme } = useTheme()
-    const [isOpen, setIsOpen] = useState(false)
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(userActions.initAuthData())
+    }, [dispatch])
 
     return (
         <div className={classNames('app', { 'adasd': false }, [theme])}>
             <Navbar />
-            <button onClick={()=>setIsOpen(true)} >open</button>
-            <Modal isOpen={isOpen} onClose={()=>setIsOpen(false)}/>
             <div className='content-page'>
                 <Sidebar />
                 <AppRouter />

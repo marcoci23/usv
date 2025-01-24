@@ -4,12 +4,16 @@ import { ButtonHTMLAttributes, FC } from "react";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     className?: string;
+    disabled?: boolean;
 }
 
 
-export const Button: FC<ButtonProps> = ({ className, children, ...otherProps }) => {
+export const Button: FC<ButtonProps> = ({ className, children,disabled, ...otherProps }) => {
     return (
-        <button className={classNames(cls.Button, {}, [className])}{...otherProps}>
+        <button 
+            className={classNames(cls.Button, {[cls.disabled] : disabled}, [className])}{...otherProps}
+            disabled={disabled}
+            >
             {children}
         </button>
     )
