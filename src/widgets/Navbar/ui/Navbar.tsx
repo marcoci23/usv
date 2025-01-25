@@ -4,11 +4,12 @@ import { AppLink, AppLinkTheme } from "shared/ui/AppLink/AppLink";
 import Icon from 'shared/assets/icons/icon.svg'
 import { Button } from "shared/ui/Button/ui/Button";
 import { useTheme } from "app/providers/ThemeProvider";
-import { useCallback, useState } from "react";
+import { Suspense, useCallback, useState } from "react";
 import { Modal } from "shared/ui/Modal/Modal";
-import { LoginForm } from "feautures/authByUsername/ui/LoginForm/LoginForm";
+import { LoginFormAsync } from "feautures/authByUsername/ui/LoginForm/LoginForm.async";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserData, userActions } from "entities/User";
+
 
 interface NavbarProps {
     className?: string;
@@ -24,9 +25,9 @@ export const Navbar = ({ className }: NavbarProps) => {
 
     const onLogout = useCallback(() => {
         dispatch(userActions.logout())
-    },[dispatch])
+    }, [dispatch])
 
-    if(userData) {
+    if (userData) {
         return (
             <div className={classNames(cls.navbar, {}, [className])}>
                 <Icon className={cls.icon} />
@@ -52,7 +53,9 @@ export const Navbar = ({ className }: NavbarProps) => {
             </div>
             {!userData && <button onClick={() => setIsOpen(true)} >open</button>}
             <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-                <LoginForm></LoginForm>
+                <Suspense fallback={<div>loading...</div>}>
+                    <LoginFormAsync></LoginFormAsync>
+                </Suspense>
                 <button onClick={() => setIsOpen(false)}>close</button>
             </Modal>
         </div>

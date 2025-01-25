@@ -1,20 +1,30 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, useStore } from "react-redux";
 import { classNames } from "shared/lib/classNames/classNames";
 import cls from './LoginForm.module.scss';
-import { memo, useCallback } from "react";
-import { loginActions } from "feautures/authByUsername/model/slice/loginSlice";
+import { memo, useCallback, useEffect } from "react";
+import { loginActions, loginReducer } from "feautures/authByUsername/model/slice/loginSlice";
 import { getLoginState } from "feautures/authByUsername/model/selectors/getLoginState/getLoginState";
 import { Button } from "shared/ui/Button/ui/Button";
 import { loginByUsername } from "feautures/authByUsername/model/services/loginByUsername/loginByUsername";
+import { ReduxStoreWithManager, stateSchema } from "app/providers/StoreProvider";
 
 interface LoginFormProps {
     className?: string;
 }
-export const LoginForm = memo(({ className }: LoginFormProps) => {
+const LoginForm = memo(({ className }: LoginFormProps) => {
 
     const dispatch = useDispatch();
-
+    const store = useStore() as ReduxStoreWithManager
     const {username, password, error, isLoading} = useSelector(getLoginState)
+
+    useEffect(() => {
+        store.reducerManager.add('loginForm',loginReducer)
+
+        return () => {
+            store.reducerManager.remove('loginForm')
+        }
+
+    },[])
 
     const onChangeUsername = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         dispatch(loginActions.setUsername(event.target.value))
@@ -50,3 +60,5 @@ export const LoginForm = memo(({ className }: LoginFormProps) => {
         </div>
     )
 })
+
+export default LoginForm
