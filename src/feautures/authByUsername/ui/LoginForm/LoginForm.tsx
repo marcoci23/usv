@@ -1,4 +1,4 @@
-import { useDispatch, useSelector, useStore } from "react-redux";
+import { useSelector, useStore } from "react-redux";
 import { classNames } from "shared/lib/classNames/classNames";
 import cls from './LoginForm.module.scss';
 import { memo, useCallback, useEffect } from "react";
@@ -7,24 +7,26 @@ import { getLoginState } from "feautures/authByUsername/model/selectors/getLogin
 import { Button } from "shared/ui/Button/ui/Button";
 import { loginByUsername } from "feautures/authByUsername/model/services/loginByUsername/loginByUsername";
 import { ReduxStoreWithManager, stateSchema } from "app/providers/StoreProvider";
+import { useAppDispatch } from "shared/lib/hooks/useAppDispatch/useAppDispatch";
 
 interface LoginFormProps {
     className?: string;
+    onSucces: () => void;
 }
-const LoginForm = memo(({ className }: LoginFormProps) => {
+const LoginForm = memo(({ className, onSucces }: LoginFormProps) => {
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const store = useStore() as ReduxStoreWithManager
-    const {username, password, error, isLoading} = useSelector(getLoginState)
+    const { username, password, error, isLoading } = useSelector(getLoginState)
 
     useEffect(() => {
-        store.reducerManager.add('loginForm',loginReducer)
+        store.reducerManager.add('loginForm', loginReducer)
 
         return () => {
             store.reducerManager.remove('loginForm')
         }
 
-    },[])
+    }, [])
 
     const onChangeUsername = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         dispatch(loginActions.setUsername(event.target.value))
@@ -33,9 +35,12 @@ const LoginForm = memo(({ className }: LoginFormProps) => {
         dispatch(loginActions.setPassword(event.target.value))
     }, [dispatch])
 
-    const onLoginClick = useCallback(() => {
-        dispatch(loginByUsername({ username: username, password: password }))
-    }, [dispatch,username, password])
+    const onLoginClick = useCallback(async () => {
+        const result = await dispatch(loginByUsername({ username: username, password: password }))
+        if (result.meta.requestStatus === 'fulfilled') {
+            onSucces()
+        }
+    }, [dispatch, username, password, onSucces])
 
     return (
         <div className={classNames(cls.LoginForm, {}, [className])}>

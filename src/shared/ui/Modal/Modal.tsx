@@ -1,4 +1,4 @@
-import { classNames } from "shared/lib/classNames/classNames";
+import { classNames, Mods } from "shared/lib/classNames/classNames";
 import cls from "./Modal.module.scss"
 import { ReactNode } from "react";
 
@@ -20,7 +20,7 @@ export const Modal = ({ className, children, isOpen, onClose }: ModalProps) => {
         e.stopPropagation()
     }
 
-    const mods: Record<string, boolean> = {
+    const mods: Mods = {
         [cls.opened]: isOpen,
     }
 

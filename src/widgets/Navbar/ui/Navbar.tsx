@@ -35,6 +35,7 @@ export const Navbar = ({ className }: NavbarProps) => {
                 <div className={cls.links}>
                     <AppLink to={'/about'}>About</AppLink>
                     <AppLink to={'/'} theme={AppLinkTheme.SECONDARY}>Main</AppLink>
+                    <AppLink to={'/profile'} theme={AppLinkTheme.SECONDARY}>Profile</AppLink>
                     <Button onClick={toggleTheme}>theme</Button>
                 </div>
                 <Button onClick={onLogout}>logout</Button>
@@ -54,7 +55,7 @@ export const Navbar = ({ className }: NavbarProps) => {
             {!userData && <button onClick={() => setIsOpen(true)} >open</button>}
             <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
                 <Suspense fallback={<div>loading...</div>}>
-                    <LoginFormAsync></LoginFormAsync>
+                    <LoginFormAsync onSucces={()=>setIsOpen(false)}></LoginFormAsync>
                 </Suspense>
                 <button onClick={() => setIsOpen(false)}>close</button>
             </Modal>

@@ -25,6 +25,14 @@
         "password": "1234"
       }
     ],
-    "profile": { "name": "typicode" }
+    "profile": { 
+      "first" : "John",
+      "last" : "Doe",
+      "age" : "30",
+      "phone" : "123-456-7890",
+      "country" : "US",
+      "city" : "New York",
+      "avatar" : "https://www.w3schools.com/howto/img_avatar.png"
+    }
   }
   
