@@ -1,30 +1,48 @@
 import { classNames } from "shared/lib/classNames/classNames";
 import cls from './ProfileCard.module.scss';
-import { useSelector } from "react-redux";
-import { getProfileData } from "entities/Profile/model/selectors/getProfileData/getProfileData";
-import { getProfileError } from "entities/Profile/model/selectors/getProfileError/getProfileError";
-import { getProfileIsLoading } from "entities/Profile/model/selectors/getProfileIsLoading/getProfileIsLoading";
-import { Button } from "shared/ui/Button/ui/Button";
+import { Profile } from "entities/Profile/model/types/profile";
 
 interface ProfileCardProps {
     className?: string;
+    data?: Profile
+    isLoading?: boolean;
+    error?: string;
+    readonly?: boolean;
+    onChangeCountry: (value?: string) => void;
+    onChangeFirstname: (value?: string) => void;
+    onChangeLastname: (value?: string) => void;
+    onChangeAge:(value?: number) => void;
+    onChangeAvatar:(value?: string) => void;
 }
-export const ProfileCard = ({ className }: ProfileCardProps) => {
+export const ProfileCard = ({ 
+    className, 
+    data, 
+    isLoading, 
+    error,
+     readonly, 
+     onChangeCountry, 
+     onChangeFirstname, 
+     onChangeLastname,
+     onChangeAge,
+     onChangeAvatar,
+}: ProfileCardProps) => {
 
-    const data  = useSelector(getProfileData)
-    const error  = useSelector(getProfileError)
-    const isLoading  = useSelector(getProfileIsLoading)
+    if(isLoading) { 
+        return <div>Loading...</div>
+    }
+
+    if(error) {
+        return <div>{error}</div>
+    }
 
     return (
         <div className={classNames(cls.ProfileCard, {}, [className])}>
-           <div className={cls.header}>
-           <h3>PROFILE CARD</h3>
-            <Button className={cls.editBtn}>EDIT</Button>
-            {/* <Button>SAVE</Button> */}
-           </div>
            <div className={cls.body}> 
-            <input type="text" placeholder="city" value={data?.city} className={cls.input}/>
-            <input type="text" placeholder="avatar" value={data?.avatar} className={cls.input}/>
+           <input onChange={(e)=>onChangeFirstname(e.target.value)} readOnly={readonly} type="text" placeholder="firstname" value={data?.first} className={cls.input}/>
+            <input onChange={(e)=>onChangeLastname(e.target.value)} readOnly={readonly} type="text" placeholder="lastname" value={data?.lastname} className={cls.input}/>
+            <input onChange={(e)=>onChangeAge(Number(e.target.value))} readOnly={readonly} type="text" placeholder="age" value={data?.age} className={cls.input}/>
+            <input onChange={(e)=>onChangeCountry(e.target.value)}readOnly={readonly} type="text" placeholder="country" value={data?.country} className={cls.input}/>
+            <input onChange={(e)=>onChangeAvatar(e.target.value)} readOnly={readonly} type="text" placeholder="avatar" value={data?.avatar} className={cls.input}/>
            </div>
         </div>
     )

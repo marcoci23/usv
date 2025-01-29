@@ -1,38 +1,35 @@
 {
-    "posts": [
-      {
-        "id": 1,
-        "title": "json-server",
-        "userId": 1
-      },
-      {
-        "id": 2,
-        "title": "json-server",
-        "userId": 2
-      }
-    ],
-    "comments": [
-      {
-        "id": 1,
-        "body": "some comment",
-        "postId": 1
-      }
-    ],
-    "users": [
-      {
-        "id": 1,
-        "username": "admin",
-        "password": "1234"
-      }
-    ],
-    "profile": { 
-      "first" : "John",
-      "last" : "Doe",
-      "age" : "30",
-      "phone" : "123-456-7890",
-      "country" : "US",
-      "city" : "New York",
-      "avatar" : "https://www.w3schools.com/howto/img_avatar.png"
+  "posts": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "userId": 1
+    },
+    {
+      "id": 2,
+      "title": "json-server",
+      "userId": 2
     }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password": "1234"
+    }
+  ],
+  "profile": {
+    "first": "John",
+    "lastname": "Doe",
+    "age": 23,
+    "country": "US",
+    "avatar": "https://www.w3schools.com/howto/img_avatar.png"
   }
-  
+}

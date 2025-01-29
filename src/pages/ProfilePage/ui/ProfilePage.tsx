@@ -1,11 +1,11 @@
 import { classNames } from "shared/lib/classNames/classNames";
 import cls from './ProfilePage.module.scss';
-import { fetchProfileData, ProfileCard, profileReducer } from "entities/Profile";
-import { useEffect } from "react";
+import { fetchProfileData, getProfileError, getProfileForm, getProfileIsLoading, getProfileReadonly, getProfileValidateErrors, profileActions, ProfileCard, profileReducer } from "entities/Profile";
+import { useCallback, useEffect } from "react";
 import { useSelector, useStore } from "react-redux";
 import { ReduxStoreWithManager } from "app/providers/StoreProvider";
-import { getProfileData } from "entities/Profile/model/selectors/getProfileData/getProfileData";
 import { useAppDispatch } from "shared/lib/hooks/useAppDispatch/useAppDispatch";
+import { ProfilePageHeader } from "./ProfilePageHeader/ProfilePageHeader";
 
 interface ProfilePageProps {
     className?: string;
@@ -14,9 +14,12 @@ interface ProfilePageProps {
 const ProfilePage = ({ className }: ProfilePageProps) => {
     
     const store = useStore() as ReduxStoreWithManager
-    const dispath = useAppDispatch()
-    const data = useSelector(getProfileData)
-    console.log(data)
+    const dispatch = useAppDispatch()
+    const formData  = useSelector(getProfileForm)
+    const error  = useSelector(getProfileError)
+    const isLoading  = useSelector(getProfileIsLoading)
+    const readonly = useSelector(getProfileReadonly)
+    const validateErrors = useSelector(getProfileValidateErrors)
 
     useEffect(() => {
             store.reducerManager.add('profile', profileReducer)
@@ -28,14 +31,42 @@ const ProfilePage = ({ className }: ProfilePageProps) => {
         }, [])
 
     useEffect(() => {
-       dispath(fetchProfileData())
-    }, [dispath])
+       dispatch(fetchProfileData())
+    }, [dispatch])
+
+    const onChangeFirstname = useCallback((value?: string)=>{
+        dispatch(profileActions.updateProfile({first: value || ''}))
+    },[])
+    const onChangeLastname = useCallback((value?: string)=>{
+        dispatch(profileActions.updateProfile({lastname: value || ''}))
+    },[])
+    const onChangeAge = useCallback((value?: number)=>{
+        dispatch(profileActions.updateProfile({age: value || 0}))
+    },[])
+    const onChangeCountry = useCallback((value?: string)=>{
+        dispatch(profileActions.updateProfile({country: value || ''}))
+    },[])
+    const onChangeAvatar = useCallback((value?: string)=>{
+        dispatch(profileActions.updateProfile({avatar: value || ''}))
+    },[])
 
     return (
        
             <div className={classNames(cls.ProfilePage, {}, [className])}>
                 PROFILE PAGE
-                 <ProfileCard/>
+                <ProfilePageHeader readonly={readonly} />
+                {validateErrors?.length && validateErrors.map((el)=><div>{el}</div>)}
+                <ProfileCard 
+                readonly={readonly} 
+                data={formData} 
+                isLoading={isLoading} 
+                error={error} 
+                onChangeCountry={onChangeCountry}
+                onChangeFirstname={onChangeFirstname}
+                onChangeLastname={onChangeLastname}
+                onChangeAge={onChangeAge}
+                onChangeAvatar={onChangeAvatar}
+                />
             </div>
         
     )
