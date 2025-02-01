@@ -33,12 +33,15 @@ export const Navbar = ({ className }: NavbarProps) => {
                 <Icon className={cls.icon} />
                 <h3>NAVBAR</h3>
                 <div className={cls.links}>
-                    <AppLink to={'/about'}>About</AppLink>
+                <AppLink to={'/about'}>About</AppLink>
                     <AppLink to={'/'} theme={AppLinkTheme.SECONDARY}>Main</AppLink>
+                    <AppLink to={'/cars'} theme={AppLinkTheme.SECONDARY}>Catalog</AppLink>
                     <AppLink to={'/profile'} theme={AppLinkTheme.SECONDARY}>Profile</AppLink>
-                    <Button onClick={toggleTheme}>theme</Button>
                 </div>
-                <Button onClick={onLogout}>logout</Button>
+               <div>
+               <Button onClick={toggleTheme}>theme</Button>
+               <Button onClick={onLogout}>logout</Button>
+               </div>
             </div>
         )
     }
@@ -50,9 +53,10 @@ export const Navbar = ({ className }: NavbarProps) => {
             <div className={cls.links}>
                 <AppLink to={'/about'}>About</AppLink>
                 <AppLink to={'/'} theme={AppLinkTheme.SECONDARY}>Main</AppLink>
-                <Button onClick={toggleTheme}>theme</Button>
             </div>
-            {!userData && <button onClick={() => setIsOpen(true)} >open</button>}
+            <div><Button onClick={toggleTheme}>theme</Button>
+            {!userData && <Button onClick={() => setIsOpen(true)} >open</Button>}
+            </div>
             <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
                 <Suspense fallback={<div>loading...</div>}>
                     <LoginFormAsync onSucces={()=>setIsOpen(false)}></LoginFormAsync>
