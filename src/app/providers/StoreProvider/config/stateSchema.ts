@@ -1,8 +1,10 @@
 import { AnyAction, CombinedState, EnhancedStore, Reducer, ReducersMapObject } from "@reduxjs/toolkit";
 import { AxiosInstance } from "axios";
+import { carDetailsSchema } from "entities/Car";
 import { ProfileSchema } from "entities/Profile";
 import { UserSchema } from "entities/User";
 import { loginSchema } from "feautures/authByUsername";
+import { catalogPageSchema } from "pages/CatalogPage";
 import { NavigateOptions, To } from "react-router-dom";
 
 export interface stateSchema {
@@ -11,6 +13,8 @@ export interface stateSchema {
     //async reducers
     loginForm?: loginSchema
     profile?: ProfileSchema
+    carDetails?: carDetailsSchema
+    catalogPage?: catalogPageSchema
 }
 export interface ReducerManager {
     getReducerMap: () => ReducersMapObject<stateSchema>;

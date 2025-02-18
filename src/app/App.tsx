@@ -9,6 +9,8 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUserInited, userActions } from 'entities/User'
 
+//import vid from 'shared/assets/icons/porsche'
+
 const App = () => {
 
     const { theme, toggleTheme } = useTheme()
@@ -21,6 +23,9 @@ const App = () => {
 
     return (
         <div className={classNames('app', { 'adasd': false }, [theme])}>
+            {/* <video muted loop id="myVideo">
+                <source src="" type="video/mp4"/>
+            </video> */}
             <Navbar />
             <div className='content-page'>
                 <Sidebar />

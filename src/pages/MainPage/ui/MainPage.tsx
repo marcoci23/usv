@@ -1,11 +1,10 @@
-import { useEffect } from "react"
-import { Modal } from "shared/ui/Modal/Modal"
+import { Page } from "widgets/Page"
 
 const MainPage = () => {
     return (
-        <div>
+        <Page>
             <h2>MAIN PAGE</h2>
-        </div>
+        </Page>
     )
 }
 

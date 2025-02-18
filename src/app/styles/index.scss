@@ -7,6 +7,7 @@
 .app {
     font: var(--font-m);
     background: var(--bg-color);
+    background-color: src();
     color: var(--primary-color);
     transition: 0.3s; 
     min-height: 100vh;
@@ -14,9 +15,4 @@
 
 .content-page {
     display: flex;
-}
-
-.page-wrapper {
-    flex-grow: 1;
-    padding: 15px;
 }

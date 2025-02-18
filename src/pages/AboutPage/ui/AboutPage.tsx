@@ -1,8 +1,10 @@
+import { Page } from "widgets/Page"
+
 const AboutPage = () => {
     return (
-        <div>
+        <Page>
             ABOUT PAGE 
-        </div>
+        </Page>
     )
 }
 export default AboutPage

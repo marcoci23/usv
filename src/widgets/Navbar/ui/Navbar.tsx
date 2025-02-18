@@ -29,7 +29,7 @@ export const Navbar = ({ className }: NavbarProps) => {
 
     if (userData) {
         return (
-            <div className={classNames(cls.navbar, {}, [className])}>
+            <header className={classNames(cls.navbar, {}, [className])}>
                 <Icon className={cls.icon} />
                 <h3>NAVBAR</h3>
                 <div className={cls.links}>
@@ -42,12 +42,12 @@ export const Navbar = ({ className }: NavbarProps) => {
                <Button onClick={toggleTheme}>theme</Button>
                <Button onClick={onLogout}>logout</Button>
                </div>
-            </div>
+            </header>
         )
     }
 
     return (
-        <div className={classNames(cls.navbar, {}, [className])}>
+        <header className={classNames(cls.navbar, {}, [className])}>
             <Icon className={cls.icon} />
             <h3>NAVBAR</h3>
             <div className={cls.links}>
@@ -63,6 +63,6 @@ export const Navbar = ({ className }: NavbarProps) => {
                 </Suspense>
                 <button onClick={() => setIsOpen(false)}>close</button>
             </Modal>
-        </div>
+        </header>
     )
 }
