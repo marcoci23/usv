@@ -18,3 +18,7 @@ declare module '*.scss' {
 declare module "*.png"
 declare module "*.jpg"
 declare module "*.jpeg"
+
+type OptionalRecord<K extends keyof any, T> = {
+    [P in K]?: T;
+}

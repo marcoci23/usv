@@ -7,7 +7,7 @@ import { ReduxStoreWithManager } from "app/providers/StoreProvider";
 import { catalogPageActions, catalogPageReducer, getCatalog } from "../model/slices/catalogPageSlice";
 import { useAppDispatch } from "shared/lib/hooks/useAppDispatch/useAppDispatch";
 import { fetchCarList } from "../model/services/fetchCarList/fetchCarList";
-import { getCatalogPageError, getCatalogPageHasMore, getCatalogPageIsLoading, getCatalogPageNum, getCatalogPageView } from "../model/selectors/catalogPageSelectors";
+import { getCatalogPageError, getCatalogPageHasMore, getCatalogPageIsLoading, getCatalogPageNum, getCatalogPageView, getCatalogPageInited } from "../model/selectors/catalogPageSelectors";
 import { Page } from "widgets/Page";
 import { fetchNextPage } from "../model/services/fetchNextPage/fetchNextPage";
 
@@ -24,6 +24,7 @@ export const CatalogPage = memo(({ className }: CatalogPageProps) => {
     const viewMode = useSelector(getCatalogPageView)
     const page = useSelector(getCatalogPageNum)
     const hasMore = useSelector(getCatalogPageHasMore)
+    const inited = useSelector(getCatalogPageInited)
 
     const onChangeViewMode = useCallback((view: ViewMode) => {
         dispatch(catalogPageActions.setView(view))
@@ -34,7 +35,6 @@ export const CatalogPage = memo(({ className }: CatalogPageProps) => {
     }, [])
 
     useEffect(() => {
-        console.log('INIT')
         store.reducerManager.add('catalogPage', catalogPageReducer)
 
         return () => {
@@ -44,13 +44,16 @@ export const CatalogPage = memo(({ className }: CatalogPageProps) => {
     }, [])
 
     useEffect(() => {
-        dispatch(catalogPageActions.initState())
-        dispatch(fetchCarList({
-            page: 1,
-        }))
+        if (!inited) {
+            dispatch(catalogPageActions.initState())
+            dispatch(fetchCarList({
+                page: 1,
+            }))
+        }
+
     }, [])
 
-    if(error){
+    if (error) {
         return <div>ERROR</div>
     }
 

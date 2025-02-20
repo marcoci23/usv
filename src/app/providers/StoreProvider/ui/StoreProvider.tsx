@@ -11,11 +11,11 @@ interface StoreProviderProps {
 }
 export const StoreProvider = ({children,initialState} : StoreProviderProps) => {
 
-    const navigate = useNavigate()
+    //const navigate = useNavigate()
 
     const store = createReduxStore(
         initialState as stateSchema,
-        navigate
+       // navigate
     )
 
     return (

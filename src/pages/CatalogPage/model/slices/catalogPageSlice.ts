@@ -29,6 +29,7 @@ import { Car, ViewMode } from 'entities/Car'
 import { catalogPageSchema } from '../types/catalogPageSchema'
 import { fetchCarList } from '../services/fetchCarList/fetchCarList'
 import { VIEW_MODE_LOCALSTORAGE_KEY } from 'shared/const/localstorage'
+import { stat } from 'fs'
 
 
 const catalogAdapter = createEntityAdapter<Car>({
@@ -48,7 +49,8 @@ const catalogPageSlice = createSlice({
         error: undefined,
         isLoading: false,
         page: 1,
-        hasMore: true
+        hasMore: true,
+        _inited: false
     }),
     reducers: {
         setView: (state, action: PayloadAction<ViewMode>) => {
@@ -62,6 +64,7 @@ const catalogPageSlice = createSlice({
             const view = localStorage.getItem(VIEW_MODE_LOCALSTORAGE_KEY) as ViewMode
             state.view = view
             state.limit = view == ViewMode.LIST ? 5 : 9
+            state._inited = true
         }
     },
     extraReducers: (builder) => {

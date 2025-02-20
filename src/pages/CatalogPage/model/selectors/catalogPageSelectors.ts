@@ -7,3 +7,4 @@ export const getCatalogPageView = (state: stateSchema) => state.catalogPage?.vie
 export const getCatalogPageNum = (state: stateSchema) => state.catalogPage?.page || 1
 export const getCatalogPageLimit = (state: stateSchema) => state.catalogPage?.limit || 9
 export const getCatalogPageHasMore = (state: stateSchema) => state.catalogPage?.hasMore
+export const getCatalogPageInited = (state: stateSchema) => state.catalogPage?._inited

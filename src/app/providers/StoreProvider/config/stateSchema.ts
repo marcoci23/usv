@@ -5,7 +5,6 @@ import { ProfileSchema } from "entities/Profile";
 import { UserSchema } from "entities/User";
 import { loginSchema } from "feautures/authByUsername";
 import { catalogPageSchema } from "pages/CatalogPage";
-import { NavigateOptions, To } from "react-router-dom";
 
 export interface stateSchema {
     user: UserSchema
@@ -16,20 +15,24 @@ export interface stateSchema {
     carDetails?: carDetailsSchema
     catalogPage?: catalogPageSchema
 }
-export interface ReducerManager {
-    getReducerMap: () => ReducersMapObject<stateSchema>;
-    reduce: (state: stateSchema, action: AnyAction) => CombinedState<stateSchema>
-    add: (key: stateSchemaKey, reducer: Reducer) => void;
-    remove: (key: stateSchemaKey) => void;
-}
-
 export type stateSchemaKey = keyof stateSchema
 
-export interface ReduxStoreWithManager extends EnhancedStore<stateSchema> { 
+export type MountedReducers = OptionalRecord<stateSchemaKey, boolean>
+
+export interface ReducerManager {
+    getReducerMap: () => ReducersMapObject<stateSchema>;
+    reduce: (state: stateSchema, action: AnyAction) => CombinedState<stateSchema>;
+    add: (key: stateSchemaKey, reducer: Reducer) => void;
+    remove: (key: stateSchemaKey) => void;
+    getMountedReducers: () => MountedReducers;
+}
+
+
+
+export interface ReduxStoreWithManager extends EnhancedStore<stateSchema> {
     reducerManager: ReducerManager
 }
 
 export interface ThunkExtraArg {
-    api: AxiosInstance,
-    navigate?: (to: To, options?: NavigateOptions) => void
+    api: AxiosInstance
 }
