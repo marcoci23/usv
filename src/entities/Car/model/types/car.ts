@@ -30,16 +30,10 @@ export interface CarImgBlock extends CarBlockBase {
 export type CarBlock = CarSpecBlock | CarTextBlock | CarImgBlock
 
 export enum CarType {
-    A = "A segment",
-    B = "B segment",
-    C = "C segment",
-    D = "D segment",
-    E = "E segment",
-    F = "F segment",
-    S = "S segment",
-    M = "M segment",
-    J = "J segment"
-
+    ALL = 'ALL',
+    BUSINESS = 'BUSINESS',
+    SPORT = 'SPORT',
+    ECONOM = 'ECONOM'
 }
 
 export interface Car {
@@ -56,4 +50,10 @@ export interface Car {
 export enum ViewMode {
     TILES = "TILES",
     LIST = "LIST"
+}
+
+export enum CarSortField {
+    VIEWS = 'views',
+    TITLE = 'title',
+    CREATED_AT = 'createdAt'
 }

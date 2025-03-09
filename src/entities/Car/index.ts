@@ -1,5 +1,5 @@
 export { ViewModeSelector } from './ui/ViewModeSelector/ViewModeSelector'
 export { CarDetails } from './ui/CarDetails/CarDetails'
 export { carDetailsSchema } from './model/types/carDetailsSchema'
-export { Car, ViewMode } from './model/types/car'
+export { Car, ViewMode , CarType, CarSortField} from './model/types/car'
 export { CarList } from './ui/CarList/CarList'

@@ -25,11 +25,11 @@ import {
     PayloadAction,
 } from '@reduxjs/toolkit'
 import { stateSchema } from 'app/providers/StoreProvider'
-import { Car, ViewMode } from 'entities/Car'
+import { Car, CarSortField, CarType, ViewMode } from 'entities/Car'
 import { catalogPageSchema } from '../types/catalogPageSchema'
 import { fetchCarList } from '../services/fetchCarList/fetchCarList'
 import { VIEW_MODE_LOCALSTORAGE_KEY } from 'shared/const/localstorage'
-import { stat } from 'fs'
+import { SortOrder } from 'shared/types'
 
 
 const catalogAdapter = createEntityAdapter<Car>({
@@ -50,7 +50,12 @@ const catalogPageSlice = createSlice({
         isLoading: false,
         page: 1,
         hasMore: true,
-        _inited: false
+        _inited: false,
+        limit: 9,
+        order: 'asc',
+        sort: CarSortField.CREATED_AT,
+        search: '',
+        type: CarType.ALL
     }),
     reducers: {
         setView: (state, action: PayloadAction<ViewMode>) => {
@@ -59,6 +64,18 @@ const catalogPageSlice = createSlice({
         },
         setPage: (state, action: PayloadAction<number>)=>{
             state.page = action.payload
+        },
+        setOrder: (state, action: PayloadAction<SortOrder>)=>{
+            state.order = action.payload
+        },
+        setSort: (state, action: PayloadAction<CarSortField>)=>{
+            state.sort = action.payload
+        },
+        setSearch: (state, action: PayloadAction<string>)=>{
+            state.search = action.payload
+        },
+        setType: (state, action: PayloadAction<CarType>)=>{
+            state.type = action.payload
         },
         initState: (state)=>{
             const view = localStorage.getItem(VIEW_MODE_LOCALSTORAGE_KEY) as ViewMode
@@ -69,14 +86,21 @@ const catalogPageSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(fetchCarList.pending, (state, action) => {
+            .addCase(fetchCarList.pending, (state,action) => {
                 state.error = undefined;
                 state.isLoading = true;
+                if(action.meta.arg.replace){
+                    catalogAdapter.removeAll(state);}
             })
-            .addCase(fetchCarList.fulfilled, (state, action: PayloadAction<Car[]>) => {
+            .addCase(fetchCarList.fulfilled, (state, action) => {
                 state.isLoading = false;
+                state.hasMore = action.payload.length >= state.limit
+
+                if(action.meta.arg.replace){
+                catalogAdapter.setAll(state,action.payload);
+                } else {
                 catalogAdapter.addMany(state,action.payload);
-                state.hasMore = action.payload.length > 0
+                }
             })
             .addCase(fetchCarList.rejected, (state, action) => {
                 state.isLoading = false;

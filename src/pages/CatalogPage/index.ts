@@ -1,2 +1,2 @@
-export { CatalogPage } from "./ui/CatalogPage";
+export { CatalogPage } from "./ui/CatalogPage/CatalogPage";
 export {catalogPageSchema} from './model/types/catalogPageSchema'

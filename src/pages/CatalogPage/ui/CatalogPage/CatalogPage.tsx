@@ -1,15 +1,25 @@
 import { classNames } from "shared/lib/classNames/classNames";
 import cls from './CatalogPage.module.scss'
 import { memo, useCallback, useEffect } from "react";
-import { CarList, ViewMode, ViewModeSelector } from "entities/Car";
+import { CarList } from "entities/Car";
 import { useSelector, useStore } from "react-redux";
 import { ReduxStoreWithManager } from "app/providers/StoreProvider";
-import { catalogPageActions, catalogPageReducer, getCatalog } from "../model/slices/catalogPageSlice";
 import { useAppDispatch } from "shared/lib/hooks/useAppDispatch/useAppDispatch";
-import { fetchCarList } from "../model/services/fetchCarList/fetchCarList";
-import { getCatalogPageError, getCatalogPageHasMore, getCatalogPageIsLoading, getCatalogPageNum, getCatalogPageView, getCatalogPageInited } from "../model/selectors/catalogPageSelectors";
 import { Page } from "widgets/Page";
-import { fetchNextPage } from "../model/services/fetchNextPage/fetchNextPage";
+import { catalogPageActions, catalogPageReducer, getCatalog } from "pages/CatalogPage/model/slices/catalogPageSlice";
+import { fetchNextPage } from "pages/CatalogPage/model/services/fetchNextPage/fetchNextPage";
+import { fetchCarList } from "pages/CatalogPage/model/services/fetchCarList/fetchCarList";
+import {
+    getCatalogPageError,
+    getCatalogPageHasMore,
+    getCatalogPageInited,
+    getCatalogPageIsLoading,
+    getCatalogPageNum,
+    getCatalogPageView
+} from "pages/CatalogPage/model/selectors/catalogPageSelectors";
+import { CatalogPagesFilters } from "../CatalogPageFilters/CatalogPagesFilters";
+import { useSearchParams } from "react-router-dom";
+import { initCatalogPage } from "pages/CatalogPage/model/services/initCatalogPage/initCatalogPage";
 
 interface CatalogPageProps {
     className?: string;
@@ -21,14 +31,9 @@ export const CatalogPage = memo(({ className }: CatalogPageProps) => {
     const carList = useSelector(getCatalog.selectAll)
     const isLoading = useSelector(getCatalogPageIsLoading)
     const error = useSelector(getCatalogPageError)
-    const viewMode = useSelector(getCatalogPageView)
-    const page = useSelector(getCatalogPageNum)
-    const hasMore = useSelector(getCatalogPageHasMore)
     const inited = useSelector(getCatalogPageInited)
-
-    const onChangeViewMode = useCallback((view: ViewMode) => {
-        dispatch(catalogPageActions.setView(view))
-    }, [])
+    const viewMode = useSelector(getCatalogPageView)
+    const [searchParams, setSearchParams] = useSearchParams()
 
     const onLoadNextPage = useCallback(() => {
         dispatch(fetchNextPage())
@@ -43,15 +48,19 @@ export const CatalogPage = memo(({ className }: CatalogPageProps) => {
 
     }, [])
 
-    useEffect(() => {
-        if (!inited) {
-            dispatch(catalogPageActions.initState())
-            dispatch(fetchCarList({
-                page: 1,
-            }))
-        }
+    // useEffect(() => {
+    //     if (!inited) {
+    //         dispatch(catalogPageActions.initState())
+    //         dispatch(fetchCarList({
+    //             page: 1,
+    //         }))
+    //     }
 
-    }, [])
+    // }, [])
+
+    useEffect(()=>{
+        dispatch(initCatalogPage(searchParams))
+    },[])
 
     if (error) {
         return <div>ERROR</div>
@@ -60,7 +69,7 @@ export const CatalogPage = memo(({ className }: CatalogPageProps) => {
     return (
         <Page onScrollEnd={onLoadNextPage} className={classNames(cls.CatalogPage, {}, [className])}>
             CATALOG PAGE
-            <ViewModeSelector view={viewMode} onViewClick={onChangeViewMode} />
+            <CatalogPagesFilters />
             <CarList
                 items={carList}
                 isLoading={isLoading}
